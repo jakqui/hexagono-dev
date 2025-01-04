@@ -18,7 +18,7 @@ public class RequisicionId {
 	private final UUID id;
 	private String error;
 
-	RequisicionId(UUID id) {
+	public RequisicionId(UUID id) {
 		if (!ValidUUIDv7(id)) {
 			throw new IllegalArgumentException(this.error);
 		}
@@ -58,24 +58,23 @@ public class RequisicionId {
 	}
 
 	private boolean ValidUUIDv7(UUID uuid) {
+		boolean isValid = true;
+		StringBuilder errors = new StringBuilder();
+
 		if (uuid.version() != 7) {
-			error = "Version " + uuid.version() + " del UUID invalida";
-			return false;
+			errors.append("Version ").append(uuid.version()).append(" del UUID invalida. ");
+			isValid = false;
 		}
 
-		// Verificar que la variante es correcta (2)
 		if (uuid.variant() != 2) {
-			error = "Variante " + uuid.variant() + " del UUID invalida";
-			return false;
+			errors.append("Variante ").append(uuid.variant()).append(" del UUID invalida.");
+			isValid = false;
 		}
 
-		// Verificar que los últimos bits son aleatorios
-		// Esto es una comprobación simplificada, ya que no podemos predecir los bits
-		// aleatorios
-		if ((uuid.getLeastSignificantBits() & 0xFFFF) == 0) {
-			error = "Bits del UUID invalidos";
-			return false;
+		if (!isValid) {
+			error = errors.toString();
 		}
-		return true;
+
+		return isValid;
 	}
 }

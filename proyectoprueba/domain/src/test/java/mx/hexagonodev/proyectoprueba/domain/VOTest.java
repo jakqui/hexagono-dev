@@ -53,4 +53,17 @@ public class VOTest {
         assertEquals(2, uuid.variant());
     }
 
+    @Test
+    void validUUIDv7_CuandoUUIDInvalidoPorVariante_EntoncesRetornaFalse() {
+        UUID invalidVariantUUID = new UUID(0x7012345612345678L, 0x1234567890abcdefL);
+        // Variante incorrecta
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new RequisicionId(invalidVariantUUID);
+        });
+        System.out.println("validUUIDv7_CuandoUUIDInvalidoPorVariante_EntoncesRetornaFalse: " +
+                invalidVariantUUID + " " + exception.getMessage());
+        System.out.println("Variante" + invalidVariantUUID.variant());
+                assertTrue(exception.getMessage().contains("Variante"));
+    }
+
 }
