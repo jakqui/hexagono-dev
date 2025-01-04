@@ -1,17 +1,20 @@
 package mx.hexagonodev.proyectoprueba.domain.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import mx.hexagonodev.proyectoprueba.domain.vo.DescripcionGeneral;
+import mx.hexagonodev.proyectoprueba.domain.vo.Personal;
 import mx.hexagonodev.proyectoprueba.domain.vo.RequisicionId;
+import mx.hexagonodev.proyectoprueba.domain.vo.TipoRequisicion;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class RequisicionCompra {
-    RequisicionId id;
+@SuperBuilder
+public abstract  sealed class RequisicionCompra 
+permits RequisicionInsumos, RequisicionServicios{
+    private final RequisicionId id;
+    private final DescripcionGeneral descripcionGeneral;
+    private final Personal solicitante;
+    private final Personal autorizador;
+    private final Personal receptor;
+    private final TipoRequisicion tipoRequisicion;
 }
