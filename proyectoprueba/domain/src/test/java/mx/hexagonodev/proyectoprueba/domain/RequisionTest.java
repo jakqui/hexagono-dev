@@ -15,7 +15,7 @@ public class RequisionTest {
 
     @Test
     void buildRequisicionInsumosConstruction() {
-        DescripcionGeneral descripcionGeneral = new DescripcionGeneral("Requicision para Stock");
+        DescripcionGeneral descripcionGeneral = DescripcionGeneral.of("Requicision para Stock");
         Personal solicitante = new Personal("Damian Vazquez", "AM", 1000);
         Personal autorizador = new Personal("Francisco Galvan", "AM", 430);
         Personal receptor = new Personal("Francisco Galvan", "AM", 430);

@@ -1,12 +1,15 @@
 package mx.hexagonodev.proyectoprueba.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+
+import mx.hexagonodev.proyectoprueba.domain.vo.DescripcionGeneral;
 import mx.hexagonodev.proyectoprueba.domain.vo.RequisicionId;
 
 public class VOTest {
@@ -63,6 +66,44 @@ public class VOTest {
                 invalidVariantUUID + " " + exception.getMessage());
         System.out.println("Variante" + invalidVariantUUID.variant());
                 assertTrue(exception.getMessage().contains("Variante"));
+    }
+
+    @Test
+    void crearDescripcionGeneral_CuandoDescripcionValida_EntoncesCreaDescripcionGeneral(){
+        String descripcion = "Descripcion de prueba";
+        DescripcionGeneral descripcionGeneral = DescripcionGeneral.of(descripcion);
+        System.out.println("crearDescripcionGeneral_CuandoDescripcionValida_EntoncesCreaDescripcionGeneral: [" + descripcionGeneral.getDescripcion() + "]");
+        assertEquals(descripcion, descripcionGeneral.getDescripcion());
+    }
+
+    @Test
+    void crearDescripcionGeneral_CuandoDescripcionNula_EntoncesLanzaExcepcion(){
+        String descripcion = null;
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            DescripcionGeneral.of(null);
+        });
+        System.out.println("crearDescripcionGeneral_CuandoDescripcionNula_EntoncesLanzaExcepcion: [" + descripcion + "] " + exception.getMessage());
+        assertTrue(exception.getMessage().contains("nula"));
+    }
+
+    @Test
+    void crearDescripcionGeneral_CuandoDescripcionDe1000Caracteres_EntoncesCreaExitosamente() {
+        // GENERA UNA DESCRIPCION DE 1000 CARACTERES
+        String descripcion = "a".repeat(1000);
+        DescripcionGeneral descripcionGeneral = DescripcionGeneral.of(descripcion);
+        System.out.println("crearDescripcionGeneral_CuandoDescripcionValida_EntoncesCreaDescripcionGeneral: [" + descripcionGeneral.getDescripcion() + "]");
+        assertEquals(descripcion, descripcionGeneral.getDescripcion());
+    }
+
+    @Test
+    void crearDescripcionGeneral_CuandoDescripcionMayorA1000Caracteres_EntoncesLanzaExcepcion() {
+        // GENERA UNA DESCRIPCION DE 1001 CARACTERES
+        String descripcion = "a".repeat(1001);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            DescripcionGeneral.of(descripcion);
+        });
+        System.out.println("crearDescripcionGeneral_CuandoDescripcionMayorA1000Caracteres_EntoncesLanzaExcepcion: [" + descripcion + "] " + exception.getMessage());
+        assertTrue(exception.getMessage().contains("1000"));
     }
 
 }
