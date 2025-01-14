@@ -1,18 +1,27 @@
 package mx.hexagonodev.proyectoprueba.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
 import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import mx.hexagonodev.proyectoprueba.domain.vo.DescripcionGeneral;
+import mx.hexagonodev.proyectoprueba.domain.vo.Personal;
 import mx.hexagonodev.proyectoprueba.domain.vo.RequisicionId;
 
 public class VOTest {
+    static Set<String> deptosActivos;
+
+    @BeforeAll
+    static void setUp(){
+        System.out.println("Iniciando pruebas unitarias para Value Objects");
+        deptosActivos = Set.of("AM", "CE", "RH");
+    }
 
     @Test
     void withId_CuandoUUIDValido_EntoncesCreaRequisicionId(){
@@ -104,6 +113,34 @@ public class VOTest {
         });
         System.out.println("crearDescripcionGeneral_CuandoDescripcionMayorA1000Caracteres_EntoncesLanzaExcepcion: [" + descripcion + "] " + exception.getMessage());
         assertTrue(exception.getMessage().contains("1000"));
+    }
+
+    @Test
+    void crearPersonal_CuandoDepartamentoValido_EntoncesCreaPersonal(){
+        String nombre = "Francisco Galván";
+        String departamento = "AM";
+        int numeroEmpleado = 430;
+        
+        Personal personal = Personal.of(nombre, departamento, numeroEmpleado, deptosActivos);
+
+        System.out.println("crearPersonal_CuandoDepartamentoValido_EntoncesCreaPersonal: [" + personal.getNombre() +" " +personal.getDepartamento() + " " +personal.getNumeroEmpleado()+ "]");
+        assertEquals(nombre, personal.getNombre());
+        assertEquals(departamento, personal.getDepartamento());
+        assertEquals(numeroEmpleado, personal.getNumeroEmpleado());
+    }
+
+    @Test
+    void crearPersonal_CuandoDepartamentoInvalido_EntoncesLanzaExcepcion(){
+        String nombre = "Francisco Galván";
+        String departamento = "TI";
+        int numeroEmpleado = 430;
+        
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            Personal.of(nombre, departamento, numeroEmpleado, deptosActivos);
+        });
+
+        System.out.println("crearPersonal_CuandoDepartamentoInvalido_EntoncesLanzaExcepcion: [" + nombre +" " +departamento + " " +numeroEmpleado+ "] " + exception.getMessage());
+        assertTrue(exception.getMessage().contains("departamento"));
     }
 
 }
