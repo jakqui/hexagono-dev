@@ -11,31 +11,31 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class RequisicionId {
+public class Id {
 
     private static final SecureRandom random = new SecureRandom();
 	@Getter
 	private final UUID id;
 	private String error;
 
-	public RequisicionId(UUID id) {
+	public Id(UUID id) {
 		if (!ValidUUIDv7(id)) {
 			throw new IllegalArgumentException(this.error);
 		}
 		this.id = id;
 	}
 
-	public static RequisicionId withId(String id) {
+	public static Id withId(String id) {
 		UUID uuid = UUID.fromString(id);
-		return new RequisicionId(uuid);
+		return new Id(uuid);
 	}
 
-	public static RequisicionId withoutId() {
+	public static Id withoutId() {
 		byte[] value = randomBytes();
 		ByteBuffer buf = ByteBuffer.wrap(value);
 		long high = buf.getLong();
 		long low = buf.getLong();
-		return new RequisicionId(new UUID(high, low));
+		return new Id(new UUID(high, low));
 	}
 
     public static byte[] randomBytes() {

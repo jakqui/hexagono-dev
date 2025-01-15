@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import mx.hexagonodev.proyectoprueba.domain.vo.DescripcionGeneral;
 import mx.hexagonodev.proyectoprueba.domain.vo.Personal;
-import mx.hexagonodev.proyectoprueba.domain.vo.RequisicionId;
+import mx.hexagonodev.proyectoprueba.domain.vo.Id;
 
 public class VOTest {
     static Set<String> deptosActivos;
@@ -30,8 +30,8 @@ public class VOTest {
         System.out.println("withId_CuandoUUIDValido_EntoncesCreaRequisicionId: "+requisicionId.getId().toString());
         assertEquals(UUID.fromString(validUUID), requisicionId.getId());*/
 
-        RequisicionId requisicionId = RequisicionId.withoutId();
-        RequisicionId nuevoRequisicionId = RequisicionId.withId(requisicionId.getId().toString());
+        Id requisicionId = Id.withoutId();
+        Id nuevoRequisicionId = Id.withId(requisicionId.getId().toString());
         System.out.println("withId_CuandoUUIDValido_EntoncesCreaRequisicionId: ["+requisicionId.getId().toString() + "]");
         assertEquals(requisicionId.getId(), nuevoRequisicionId.getId());
 
@@ -46,7 +46,7 @@ public class VOTest {
     void withId_CuandoUUIDInvalido_EntoncesLanzaExcepcion(){
         String invalidUUID = "25c989a1-6d54-4b27-a250-16f92365e729";
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                RequisicionId.withId(invalidUUID);
+                Id.withId(invalidUUID);
             });
         System.out.println("withId_CuandoUUIDInvalido_EntoncesLanzaExcepcion: [" + invalidUUID+"] " +exception.getMessage());
         assertTrue(exception.getMessage().contains("Version"));
@@ -54,7 +54,7 @@ public class VOTest {
 
     @Test
     void withId_CuandoSeGeneraAutomaticamente_EntoncesCreaUUIDValido(){
-        RequisicionId requisicionId = RequisicionId.withoutId();
+        Id requisicionId = Id.withoutId();
         UUID uuid = requisicionId.getId();
         System.out.println("withId_CuandoSeGeneraAutomaticamente_EntoncesCreaUUIDValido: [" +
                             requisicionId.getId()+"]" +
@@ -69,7 +69,7 @@ public class VOTest {
         UUID invalidVariantUUID = new UUID(0x7012345612345678L, 0x1234567890abcdefL);
         // Variante incorrecta
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new RequisicionId(invalidVariantUUID);
+            new Id(invalidVariantUUID);
         });
         System.out.println("validUUIDv7_CuandoUUIDInvalidoPorVariante_EntoncesRetornaFalse: " +
                 invalidVariantUUID + " " + exception.getMessage());
